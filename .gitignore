@@ -1,0 +1,32 @@
+/target/
+/reports/
+/evidence/
+/experiments/
+
+# Local configuration, caches, editor state, and machine-specific settings
+/.cargo/config.toml
+/.cache/
+/.idea/
+/.vscode/
+*.local.toml
+*.local.json
+
+# Secrets, logs, and temporary files
+.env
+.env.*
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Optional local Toolkit host
+/integrations/toolkit-uia/Cargo.toml
+/integrations/toolkit-uia/Cargo.lock
+/integrations/toolkit-uia/resources/
+target/
+
+# Local compatibility audits
+/docs/MAKEPAD_BROWSER_EXECUTION_ADAPTER_V1.md
+/PLAYGROUND_COMPATIBILITY_*.md
+/media-capability-report.json

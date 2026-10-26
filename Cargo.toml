@@ -1,0 +1,24 @@
+[package]
+name = "designing-makepad"
+version = "0.1.0"
+edition = "2024"
+publish = false
+license = "MIT"
+description = "Reusable desktop UI components and a Makepad UI laboratory"
+repository = "https://github.com/paulgreenbox-beep/designing-makepad"
+
+[workspace]
+
+[dependencies]
+makepad-widgets = { git = "https://github.com/makepad/makepad.git", rev = "105158e08c89d47f57af4621420ed68eb3a147ce", version = "2.0.0" }
+
+[target.'cfg(windows)'.dependencies]
+windows-uia = { package = "windows", version = "0.61.3", features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Gdi",
+    "Win32_UI_HiDpi",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(feature, values("toolkit-uia"))'] }

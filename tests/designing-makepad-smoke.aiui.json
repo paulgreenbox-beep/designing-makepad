@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "name": "designing-makepad-smoke",
+  "application": {
+    "command": "target/debug/designing-makepad.exe",
+    "window_title": "Designing Makepad"
+  },
+  "options": {
+    "stop_on_error": true,
+    "evidence_on_failure": true
+  },
+  "steps": [
+    {"op": "session.open", "save_session_as": "app"},
+    {"op": "inspect_ui", "session": "app", "save_as": "initial_tree"},
+    {"op": "wait_for_automation_id", "session": "app", "id": "tabs"},
+    {"op": "wait_for_automation_id", "session": "app", "id": "tab.new"},
+    {"op": "wait_for_value", "session": "app", "id": "tab.count", "value": "3"},
+    {"op": "activate_window", "session": "app"},
+    {"op": "click_relative", "session": "app", "id": "tab.new", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "tab.count", "value": "4"},
+    {"op": "click_relative", "session": "app", "id": "tab.item.2.close", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "tab.count", "value": "3"},
+    {"op": "click_relative", "session": "app", "id": "menu.file", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "assert_visible", "session": "app", "id": "menu.item.new_tab"},
+    {"op": "click_relative", "session": "app", "id": "menu.item.new_tab", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "tab.count", "value": "4"},
+    {"op": "right_click_relative", "session": "app", "id": "context.area", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "overlay.active", "value": "true", "timeout_ms": 3000, "poll_ms": 25},
+    {"op": "wait_visible", "session": "app", "id": "context.item.new_tab", "timeout_ms": 3000},
+    {"op": "assert_interactable", "session": "app", "id": "context.item.new_tab"},
+    {"op": "click", "session": "app", "id": "context.item.new_tab"},
+    {"op": "wait_for_value", "session": "app", "id": "tab.count", "value": "5"},
+    {"op": "click", "session": "app", "id": "context.item.dismiss"},
+    {"op": "wait_for_value", "session": "app", "id": "overlay.active", "value": "false", "timeout_ms": 3000, "poll_ms": 25},
+    {"op": "wait_hidden", "session": "app", "id": "context.item.new_tab", "timeout_ms": 3000},
+    {"op": "click_relative", "session": "app", "id": "toolbar.modal", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "assert_visible", "session": "app", "id": "modal.settings.close"},
+    {"op": "press", "session": "app", "key": "ESCAPE"},
+    {"op": "wait_hidden", "session": "app", "id": "modal.settings.close", "timeout_ms": 3000},
+
+
+    {"op": "hotkey", "session": "app", "keys": ["Ctrl", "Tab"]},
+    {"op": "screenshot_window", "session": "app"},
+    {"op": "get_runtime_health", "session": "app"},
+    {"op": "windows_export_evidence", "session": "app"}
+  ],
+  "teardown": [
+    {"op": "session.close", "session": "app"}
+  ]
+}
+

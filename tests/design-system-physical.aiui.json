@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "name": "design-system-physical",
+  "application": {
+    "command": "target/debug/designing-makepad.exe",
+    "window_title": "Designing Makepad"
+  },
+  "options": {
+    "stop_on_error": true,
+    "evidence_on_failure": true
+  },
+  "steps": [
+    {"op": "session.open", "save_session_as": "app"},
+    {"op": "inspect_ui", "session": "app", "save_as": "initial_tree"},
+    {"op": "wait_for_automation_id", "session": "app", "id": "menu.file"},
+    {"op": "wait_for_automation_id", "session": "app", "id": "menu.edit"},
+    {"op": "wait_for_automation_id", "session": "app", "id": "menu.language"},
+    {"op": "wait_for_automation_id", "session": "app", "id": "toolbar.new"},
+    {"op": "wait_for_automation_id", "session": "app", "id": "context.area"},
+
+    {"op": "hover_relative", "session": "app", "id": "toolbar.new", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "screenshot_window", "session": "app", "save_as": "icon_tooltip"},
+
+    {"op": "click_relative", "session": "app", "id": "menu.file", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "menu.active", "value": "file"},
+    {"op": "wait_visible", "session": "app", "id": "menu.item.new_tab", "timeout_ms": 3000},
+    {"op": "screenshot_window", "session": "app", "save_as": "file_menu_open"},
+    {"op": "click_relative", "session": "app", "id": "menu.item.new_tab", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "tab.count", "value": "4"},
+    {"op": "wait_for_value", "session": "app", "id": "menu.active", "value": "closed"},
+
+    {"op": "click_relative", "session": "app", "id": "menu.file", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "menu.active", "value": "file"},
+    {"op": "click_relative", "session": "app", "id": "context.area", "position": {"x": 0.20, "y": 0.20}},
+    {"op": "wait_for_value", "session": "app", "id": "menu.active", "value": "closed"},
+
+    {"op": "click_relative", "session": "app", "id": "menu.file", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "menu.active", "value": "file"},
+    {"op": "press", "session": "app", "key": "ESCAPE"},
+    {"op": "wait_for_value", "session": "app", "id": "menu.active", "value": "closed"},
+
+    {"op": "click_relative", "session": "app", "id": "menu.file", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "menu.active", "value": "file"},
+    {"op": "click_relative", "session": "app", "id": "menu.edit", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "menu.active", "value": "edit"},
+    {"op": "wait_visible", "session": "app", "id": "menu.item.new_tab", "timeout_ms": 3000},
+    {"op": "screenshot_window", "session": "app", "save_as": "edit_menu_open"},
+    {"op": "press", "session": "app", "key": "ESCAPE"},
+    {"op": "wait_for_value", "session": "app", "id": "menu.active", "value": "closed"},
+
+    {"op": "right_click_relative", "session": "app", "id": "context.area", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_visible", "session": "app", "id": "context.item.new_tab", "timeout_ms": 3000},
+    {"op": "screenshot_window", "session": "app", "save_as": "context_menu_open"},
+    {"op": "click_relative", "session": "app", "id": "context.item.new_tab", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_for_value", "session": "app", "id": "tab.count", "value": "5"},
+    {"op": "wait_for_value", "session": "app", "id": "overlay.kind", "value": "none"},
+
+    {"op": "click_relative", "session": "app", "id": "toolbar.modal", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "wait_visible", "session": "app", "id": "modal.settings.close", "timeout_ms": 3000},
+    {"op": "screenshot_window", "session": "app", "save_as": "modal_open"},
+    {"op": "press", "session": "app", "key": "ESCAPE"},
+    {"op": "wait_hidden", "session": "app", "id": "modal.settings.close", "timeout_ms": 3000},
+
+    {"op": "screenshot_window", "session": "app", "save_as": "final_showcase"},
+    {"op": "get_runtime_health", "session": "app"},
+    {"op": "windows_export_evidence", "session": "app"}
+  ],
+  "teardown": [
+    {"op": "session.close", "session": "app"}
+  ]
+}

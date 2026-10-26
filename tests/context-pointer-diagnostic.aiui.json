@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "name": "context-pointer-diagnostic",
+  "application": {
+    "command": "target/debug/designing-makepad.exe",
+    "window_title": "Designing Makepad"
+  },
+  "options": {
+    "stop_on_error": true,
+    "evidence_on_failure": true
+  },
+  "steps": [
+    {"op": "session.open", "save_session_as": "app"},
+    {"op": "inspect_ui", "session": "app"},
+    {"op": "right_click_relative", "session": "app", "id": "context.area", "position": {"x": 0.50, "y": 0.50}},
+    {"op": "inspect_ui", "session": "app", "save_as": "after_right_click"},
+    {"op": "screenshot_window", "session": "app"},
+    {"op": "get_runtime_health", "session": "app"}
+  ],
+  "teardown": [
+    {"op": "session.close", "session": "app"}
+  ]
+}

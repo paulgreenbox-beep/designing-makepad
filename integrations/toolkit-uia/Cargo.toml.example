@@ -1,0 +1,27 @@
+# Local-only host: copy this file to Cargo.toml and set the Toolkit path.
+[package]
+name = "designing-makepad-toolkit-uia"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[features]
+default = ["toolkit-uia"]
+toolkit-uia = []
+
+[dependencies]
+designing-makepad = { path = "../.." }
+makepad-widgets = { git = "https://github.com/makepad/makepad.git", rev = "105158e08c89d47f57af4621420ed68eb3a147ce" }
+toolkit-windows-automation = { path = "../../../Rust_Makepad_Toolkit/crates/toolkit-windows-automation" }
+
+[target.'cfg(windows)'.dependencies]
+windows-uia = { package = "windows", version = "0.61.3", features = [
+    "Win32_Foundation", "Win32_Graphics_Gdi", "Win32_UI_HiDpi", "Win32_UI_WindowsAndMessaging",
+] }
+
+[[bin]]
+name = "designing-makepad"
+path = "../../src/main.rs"
