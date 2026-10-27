@@ -377,6 +377,7 @@ script_mod! {
         padding: Inset{left: 12 right: 12 top: 5 bottom: 5}
     }
 
+    // Keep these static Animator durations aligned with MotionTokens::duration_normal.
     mod.widgets.DsMotionProbe = mod.widgets.DsPrimaryButton {
         reset_hover_on_click: true
         animator +: {
@@ -397,7 +398,7 @@ script_mod! {
                     }
                 }
                 reduced: AnimatorState{
-                    from: {all: Forward {duration: 0.06}}
+                    from: {all: Forward {duration: 0.08}}
                     ease: OutQuad
                     apply: {
                         draw_bg: {down: 0.0 hover: 1.0}
@@ -413,7 +414,7 @@ script_mod! {
                     }
                 }
                 smooth: AnimatorState{
-                    from: {all: Forward {duration: 0.28}}
+                    from: {all: Forward {duration: 0.22}}
                     ease: OutQuad
                     apply: {
                         draw_bg: {down: 0.0 hover: 1.0}

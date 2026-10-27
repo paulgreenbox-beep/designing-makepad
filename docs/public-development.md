@@ -23,3 +23,15 @@ GUI development and inspection use an admitted `toolkit-gui-remote-canary` route
 Do not fall back to the legacy GUI MCP, direct UIA scripts, private HTTP endpoints, or synthetic screenshots. Historical AI UI scenarios and prior captures are historical records, not current GUI acceptance. Real runtime GUI acceptance for this publication is **NOT RUN**. Static checks, CI, or unit tests do not replace that separate integration evidence.
 
 This repository's README records the publication verification status in `VERIFICATION.md`; that record is maintained with the publication review.
+
+## Text-editing popup pattern and limits
+
+Use a normal root-level widget subtree with a `TextInput` inside a visible panel; do not place a live editor in `OverlayHost` just to obtain z-order. Keep the panel and its input in the normal event and draw tree. The shell owns visibility, placement, outside-click policy, and whether edits are accepted or cancelled. `Modal` is the separate option for an application dialog.
+
+On opening, show the panel and request a redraw. Once the input has a valid drawn area, the shell can request focus with `self.ui.text_input(cx, ids!(popup_input)).set_key_focus(cx)`. The exact point at which a newly visible input has a valid area depends on the shell's draw lifecycle; an immediate focus request before its first draw should not be assumed to work. Forward normal events to the widget tree, use `changed`, `escaped`, or `key_focus_lost` actions as appropriate, and decide explicitly whether focus loss commits, cancels, or does neither. On close, hide the panel and return focus to a still-visible, valid initiating control when appropriate; do not restore a stale area. Avoid treating focus loss caused by an internal click or IME composition as an automatic commit without application-specific handling.
+
+The pinned Makepad source exposes `WidgetRef::set_key_focus` and `TextInputRef` action helpers; this is a proposed integration pattern, not evidence that focus, typing, Escape, outside clicks, selection, IME, or restoration work in a particular shell. Validate those interactions physically through an admitted GUI route. Current GUI acceptance: **NOT RUN**.
+
+## Motion scope
+
+The Style Lab motion probe is a Button with statically declared Animator states. Its None/Reduced/Subtle/Smooth transitions use `duration_normal` policy values (instant/80/160/220 ms); the static declarations must be kept in sync with `MotionTokens`. The hover and popup values shown in the lab are policy tokens, not evidence of applied timings. The probe does not set the built-in hover/focus timings of other controls and `play_style_popup_open` does not animate popup opening. Dynamic construction of Animator values is not assumed safe.

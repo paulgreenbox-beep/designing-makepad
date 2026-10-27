@@ -105,7 +105,9 @@ impl App {
 
     /// Runs a static DSL Animator on a real Button. The durations are declared
     /// at build time because runtime Splash evaluation cannot construct Animator
-    /// values safely. None cuts to the final state; Reduced uses the short path.
+    /// values safely. These static durations match duration_normal tokens.
+    /// None cuts to the final state; Reduced uses the short path. Other controls
+    /// and popup openings do not receive these timings from this probe.
     pub(crate) fn run_style_motion_probe(&mut self, cx: &mut Cx) {
         if let Some(mut probe) = self.ui.button(cx, ids!(style_motion_probe)).borrow_mut() {
             probe.animator_cut(cx, ids!(style_motion.idle));
@@ -119,9 +121,9 @@ impl App {
         let tokens = self.style_profile.tokens(self.style_tuning);
         self.style_note = match self.style_profile.motion {
             MotionStyle::None => "Motion probe: instant cut; no decorative animation".to_owned(),
-            MotionStyle::Reduced => "Motion probe: native reduced 60 ms highlight".to_owned(),
+            MotionStyle::Reduced => "Motion probe: native reduced 80 ms highlight".to_owned(),
             MotionStyle::Subtle => "Motion probe: native subtle 160 ms highlight".to_owned(),
-            MotionStyle::Smooth => "Motion probe: native smooth 280 ms highlight".to_owned(),
+            MotionStyle::Smooth => "Motion probe: native smooth 220 ms highlight".to_owned(),
         };
         self.sync_style_lab(cx, tokens);
         self.refresh(cx);
@@ -322,11 +324,11 @@ impl App {
         self.ui.label(cx, ids!(style_motion_summary)).set_text(
             cx,
             &format!(
-                "hover {:.0}ms · popup {:.0}ms{}",
+                "tokens: hover {:.0}ms · popup {:.0}ms{}",
                 tokens.motion.duration_fast * 1000.0,
                 tokens.motion.duration_popup * 1000.0,
                 if tokens.motion.decorative_motion {
-                    " · animated"
+                    " · decorative motion allowed"
                 } else {
                     " · no decorative travel"
                 }
