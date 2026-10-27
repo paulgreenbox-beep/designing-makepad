@@ -50,3 +50,4 @@ existing static button probe only; the values displayed for other controls and
 popup openings are tokens, not established runtime behavior. TextInput popup
 focus and keyboard behavior remain a documented pattern awaiting live proof.
 See `reports/FIX_REPORT.md` and local ignored stabilization evidence.
+Candidate commit 6d4b76566ac8068c963fbabac3f963d287d7ccdf passed Windows GitHub Actions: https://github.com/paulgreenbox-beep/designing-makepad/actions/runs/40557306444. Local commit 04e4f63426b6fb8edd2fd610e9934aee844cfcdc has the identical tested tree.
