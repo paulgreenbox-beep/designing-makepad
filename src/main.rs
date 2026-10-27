@@ -959,7 +959,7 @@ impl App {
             screen.rect(style_lab_rect),
         );
         style_motion.value = Some(format!(
-            "{}; hover {:.0} ms; popup {:.0} ms",
+            "{}; hover token {:.0} ms; popup token {:.0} ms",
             self.style_profile.motion.label(),
             tokens.motion.duration_fast * 1000.0,
             tokens.motion.duration_popup * 1000.0,
