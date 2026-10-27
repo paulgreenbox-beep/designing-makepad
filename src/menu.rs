@@ -406,6 +406,50 @@ mod tests {
     }
 
     #[test]
+    fn closed_chain_rejects_submenus_and_reopen_has_no_stale_path() {
+        let mut state = MenuChainState::default();
+        assert!(!state.open_submenu("recent"));
+        assert!(!state.open_nested_submenu("child"));
+        assert!(!state.close_submenus());
+        state.open_root(DesktopMenu::File);
+        assert!(state.open_submenu("recent"));
+        assert!(state.open_nested_submenu("child"));
+        assert_eq!(state.close(), MenuTransition::Closed(DesktopMenu::File));
+        assert_eq!(state.close(), MenuTransition::Unchanged);
+        state.open_root(DesktopMenu::Edit);
+        assert_eq!(state.root(), Some(DesktopMenu::Edit));
+        assert!(state.submenu_path().is_empty());
+    }
+
+    #[test]
+    fn unchanged_root_keeps_cascade_but_toggle_closes_it() {
+        let mut state = MenuChainState::default();
+        state.open_root(DesktopMenu::File);
+        assert!(state.open_submenu("recent"));
+        assert!(!state.open_submenu("recent"));
+        assert!(state.open_nested_submenu("child"));
+        assert!(!state.open_nested_submenu("child"));
+        assert_eq!(state.open_root(DesktopMenu::File), MenuTransition::Unchanged);
+        assert_eq!(state.submenu_path(), &["recent", "child"]);
+        assert_eq!(state.toggle_root(DesktopMenu::File), MenuTransition::Closed(DesktopMenu::File));
+        assert!(!state.is_open());
+        assert!(state.submenu_path().is_empty());
+    }
+
+    #[test]
+    fn replacing_first_level_submenu_discards_nested_descendants() {
+        let mut state = MenuChainState::default();
+        state.open_root(DesktopMenu::View);
+        state.open_submenu("one");
+        state.open_nested_submenu("child");
+        assert!(state.open_submenu("two"));
+        assert_eq!(state.submenu_path(), &["two"]);
+        assert!(state.close_submenus());
+        assert!(!state.close_submenus());
+        assert_eq!(state.root(), Some(DesktopMenu::View));
+    }
+
+    #[test]
     fn outside_click_can_close_the_entire_cascade() {
         let mut state = MenuChainState::default();
         state.open_root(DesktopMenu::File);

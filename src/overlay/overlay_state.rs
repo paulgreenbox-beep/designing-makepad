@@ -103,6 +103,21 @@ mod tests {
     }
 
     #[test]
+    fn replacement_and_repeated_dismissal_report_state_transitions() {
+        let mut state = OverlayState::default();
+        assert!(!state.dismiss_escape());
+        state.open(OverlayKind::MainMenu);
+        state.switch(OverlayKind::ContextMenu);
+        assert_eq!(state.kind(), OverlayKind::ContextMenu);
+        assert!(state.dismiss_outside());
+        assert!(!state.dismiss_escape());
+        state.open(OverlayKind::FloatingPanel);
+        assert!(state.dismiss_escape());
+        assert!(!state.close());
+        assert_eq!(state.kind(), OverlayKind::None);
+    }
+
+    #[test]
     fn escape_closes_the_active_overlay() {
         let mut state = OverlayState::default();
         state.open(OverlayKind::ContextMenu);

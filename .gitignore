@@ -30,3 +30,8 @@ target/
 /docs/MAKEPAD_BROWSER_EXECUTION_ADAPTER_V1.md
 /PLAYGROUND_COMPATIBILITY_*.md
 /media-capability-report.json
+
+# Publish the concise stabilization report; keep bulky evidence local.
+!/reports/
+/reports/*
+!/reports/FIX_REPORT.md
